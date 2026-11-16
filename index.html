@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#A2007D">
+<title>Ponle huevos a tu salud — Bagó</title>
+<meta name="description" content="Noviembre Azul: hazte un chequeo de próstata. Conoce la opinión de expertos y agenda tu chequeo.">
+<style>
+  @font-face { font-family: "Barred"; src: url("fuentes/Fontspring-DEMO-gunterz-black.otf"); font-display: swap; }
+  @font-face { font-family: "Montserrat"; font-weight: 500; src: url("fuentes/Montserrat-Medium.otf"); font-display: swap; }
+  @font-face { font-family: "Montserrat"; font-weight: 700; src: url("fuentes/Montserrat-Bold.otf"); font-display: swap; }
+  @font-face { font-family: "Playlist"; src: url("fuentes/Playlist Script.otf"); font-display: swap; }
+
+  :root {
+    --magenta: #A2007D;
+    --magenta-osc: #7d0061;
+    --azul: #12a6e8;
+    --azul-osc: #0a7fd0;
+    /* versión lila: el color más oscuro de la página es el lila de la campaña (#A2007D) */
+    --fondo: #B4239A;        /* lila claro de fondo general */
+    --fondo-2: #B4239A;
+    --tarjeta: #ffffff;
+    --borde: #ffffff;
+    --barra: #A2007D;        /* lila campaña: barra, banner, cierre y pie */
+    --texto: #ffffff;
+    --gris: #fde6f6;         /* texto secundario sobre lila */
+    --rosa: #ffe066;         /* acento (amarillo suave) */
+    --celeste: #0870b8;
+    --suave: var(--fondo-2);
+    --ancho: 1180px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+  body { font-family: "Montserrat", system-ui, sans-serif; font-weight: 500; color: var(--texto); background: var(--fondo); line-height: 1.5; }
+  img { display: block; max-width: 100%; height: auto; }
+  a { color: inherit; }
+  button { font: inherit; }
+  .solo-movil { display: none; }
+  @media (max-width: 760px) { .solo-movil { display: inline; } .solo-escritorio { display: none; } }
+  .contenedor { width: min(var(--ancho), 100% - 32px); margin-inline: auto; }
+
+  /* ---------- Barra ---------- */
+  .barra { position: sticky; top: 0; z-index: 50; background: var(--barra); box-shadow: 0 1px 0 #ffffff12, 0 4px 18px #0006; }
+  .barra .contenedor { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+  .barra .logo img { height: 34px; width: auto; }
+  .menu { display: flex; align-items: center; gap: 34px; list-style: none; }
+  .menu a { text-decoration: none; font-size: 15px; }
+  .menu a:hover { color: var(--rosa); }
+  .btn { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 700; border-radius: 999px; padding: 12px 26px; font-size: 16px; transition: transform .15s, box-shadow .15s, background .15s; cursor: pointer; border: 0; }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-magenta { background: var(--magenta); color: #fff; }
+  .btn-magenta:hover { background: var(--magenta-osc); }
+  .menu .btn { padding: 9px 20px; font-size: 14px; }
+  .barra .btn-magenta { background: #fff; color: var(--magenta); }
+  .barra .btn-magenta:hover { background: #ffe6f6; }
+  .hamburguesa { display: none; background: none; border: 0; width: 44px; height: 44px; cursor: pointer; color: #fff; }
+
+  /* ---------- Hero ---------- */
+  .hero { position: relative; overflow: hidden; color: #fff;
+    background: url("img/fondo-azul.webp") center 35% / cover no-repeat, var(--azul); }
+  .hero .contenedor { position: relative; z-index: 2; display: grid; grid-template-columns: 1.05fr 1fr; align-items: center; gap: 24px; padding: 64px 0 150px; }
+  .lockup { position: relative; width: clamp(280px, 40vw, 540px); max-width: 100%; margin: 0 0 clamp(10px, 1.6vw, 22px); }
+  .titular-kv { width: 100%; display: block; }   /* titular aprobado en curvas */
+  .titulo { font-family: "Barred", "Montserrat", sans-serif; font-weight: 700; font-size: clamp(58px, 9.2vw, 112px); line-height: .86; letter-spacing: 1px; }
+  .sello { position: absolute; right: -6%; bottom: 0; width: 72%; }
+  .chequeo { font-family: "Playlist", cursive; font-size: clamp(44px, 6vw, 72px); line-height: 1; margin: 14px 0 12px; }
+  .bajada { font-size: clamp(16px, 1.6vw, 19px); max-width: 30ch; opacity: .97; }
+  .acciones { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 30px; }
+  .btn-blanco { background: #fff; color: var(--magenta); box-shadow: 0 6px 20px #0002; }
+  .btn-borde { background: transparent; color: #fff; box-shadow: inset 0 0 0 2px #fff; }
+  .btn-borde:hover { background: #ffffff1f; }
+  .hero .huevos { width: min(100%, 560px); justify-self: center; filter: drop-shadow(0 30px 30px #00305f40); }
+  .ola { position: absolute; left: 0; bottom: -1px; width: 100%; height: 140px; z-index: 1; }
+
+  /* ---------- Video campaña ---------- */
+  .video-campana { position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: 92vh; background: #000; overflow: hidden; }
+  .video-campana img { width: 100%; height: 100%; object-fit: cover; }
+
+  .reproducir { position: absolute; inset: 0; display: grid; place-items: center; background: linear-gradient(180deg, #0000 50%, #0007 100%); border: 0; cursor: pointer; color: #fff; }
+  .play { width: clamp(64px, 9vw, 110px); aspect-ratio: 1; border-radius: 50%; background: #ffffffe6; display: grid; place-items: center; box-shadow: 0 10px 40px #0005; transition: transform .2s; }
+  .reproducir:hover .play { transform: scale(1.07); }
+  .play svg { width: 38%; margin-left: 8%; fill: var(--magenta); }
+  .video-info { position: absolute; left: clamp(16px, 4vw, 48px); bottom: clamp(14px, 3vw, 36px); text-align: left; }
+  .video-info small { display: block; font-size: clamp(11px, 1.1vw, 14px); letter-spacing: .12em; text-transform: uppercase; opacity: .85; }
+  .video-info strong { font-size: clamp(18px, 2.4vw, 32px); }
+  .duracion { position: absolute; right: clamp(16px, 4vw, 48px); bottom: clamp(14px, 3vw, 36px); background: #000a; color: #fff; font-size: 13px; padding: 4px 10px; border-radius: 6px; }
+
+  /* ---------- Banner expertos ---------- */
+  .banner { background: var(--magenta); color: #fff; }
+  .banner .contenedor { display: flex; align-items: center; justify-content: center; gap: 18px; min-height: 76px; text-align: center; }
+  .banner h2 { font-size: clamp(19px, 2.4vw, 28px); font-weight: 700; letter-spacing: .01em; }
+  .banner .rayitas { width: 34px; flex: none; }
+
+  /* ---------- Carrusel ---------- */
+  .expertos { background: var(--suave); padding: 48px 0 64px; }
+  .expertos .intro { text-align: center; color: var(--gris); max-width: 60ch; margin: 0 auto 30px; }
+  .carrusel { position: relative; }
+  .pista { display: flex; gap: 22px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; padding: 6px 4px 18px; scrollbar-width: none; }
+  .pista::-webkit-scrollbar { display: none; }
+  .tarjeta { flex: 0 0 calc((100% - 3 * 22px) / 4); scroll-snap-align: start; background: var(--tarjeta); border-radius: 18px; overflow: hidden; box-shadow: 0 10px 26px #6d00552e; display: flex; flex-direction: column; }
+  .clip { position: relative; aspect-ratio: 9 / 16; overflow: hidden; border: 0; padding: 0; cursor: pointer; display: block; width: 100%; background: #cfe9f8; }
+  .clip svg.retrato { width: 100%; height: 100%; display: block; }
+  .clip .play { position: absolute; left: 50%; top: 74%; transform: translate(-50%, -50%); width: 64px; }
+  .clip:hover .play { transform: translate(-50%, -50%) scale(1.08); }
+  .clip .tema { position: absolute; left: 0; right: 0; bottom: 0; padding: 40px 14px 14px; text-align: left; color: #fff; font-weight: 700; font-size: 15px; line-height: 1.3; background: linear-gradient(180deg, #0000, #000b); }
+  .clip .dur { position: absolute; right: 10px; top: 10px; background: #000a; color: #fff; font-size: 12px; padding: 3px 8px; border-radius: 6px; }
+  .clip .marca { position: absolute; left: 10px; top: 10px; height: 22px; opacity: .95; }
+  .datos { padding: 16px 16px 18px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
+  .datos h3 { font-size: 17px; color: var(--magenta); line-height: 1.25; }
+  .datos .esp { font-size: 13px; font-weight: 700; color: var(--celeste); }
+  .datos address { font-style: normal; font-size: 13.5px; color: #7a4a70; margin-top: 4px; }
+  .mapa { margin-top: auto; padding-top: 10px; display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 700; color: var(--magenta); text-decoration: none; }
+  .mapa:hover { text-decoration: underline; }
+  .mapa svg { width: 16px; height: 16px; fill: currentColor; }
+
+  .controles { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 18px; }
+  .flecha { width: 48px; height: 48px; border-radius: 50%; border: 0; background: #fff; color: var(--magenta); display: grid; place-items: center; cursor: pointer; box-shadow: 0 6px 18px #6d005540; }
+  .flecha:hover { background: #ffe6f6; }
+  .flecha svg { width: 20px; height: 20px; }
+  .puntos { display: flex; gap: 8px; }
+  .puntos button { width: 10px; height: 10px; border-radius: 50%; border: 0; background: #e7a3d4; cursor: pointer; padding: 0; transition: width .2s, background .2s; }
+  .puntos button[aria-current="true"] { width: 26px; border-radius: 999px; background: #fff; }
+  .pausa { background: none; border: 0; color: var(--gris); font: inherit; font-size: 13px; cursor: pointer; text-decoration: underline; }
+
+  /* ---------- Cierre / agenda ---------- */
+  .agenda { position: relative; background: var(--magenta); color: #fff; padding: 110px 0 70px; overflow: hidden; }
+  .agenda .ola-sup { position: absolute; top: -1px; left: 0; width: 100%; height: 90px; }
+  .agenda .contenedor { position: relative; display: grid; grid-template-columns: 1fr auto 1px 1fr; align-items: center; gap: 44px; }
+  .agenda h2 { font-size: clamp(24px, 2.8vw, 34px); line-height: 1.2; }
+  .agenda h2 span { font-family: "Playlist", cursive; font-weight: 400; font-size: 1.35em; display: block; margin-bottom: 6px; }
+  .qr { background: #fff; padding: 14px; border-radius: 18px; width: 200px; box-shadow: 0 10px 30px #0003; }
+  .separador { width: 1px; align-self: stretch; background: #ffffff55; }
+  .celular { display: flex; gap: 18px; align-items: center; }
+  .celular svg { width: 52px; flex: none; }
+  .celular p { font-size: 19px; }
+  .celular .btn { margin-top: 14px; }
+
+  /* ---------- Pie ---------- */
+  .pie { background: var(--barra); padding: 34px 0 28px; border-top: 1px solid #ffffff33; }
+  .pie .contenedor { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .pie .logos { display: flex; align-items: center; gap: 26px; }
+  .pie .logos .bago { height: 32px; width: auto; }
+  /* Logo Sofía según su manual: versión NEGATIVA (blanca) sobre fondo de color, con zona de seguridad
+     libre alrededor (≈ alto de la "o", ~18% del ancho) y tamaño mínimo de 3 cm con eslogan (≈ 113 px CSS) */
+  .sofia-neg { padding: 22px; flex: none; }
+  .sofia-neg img { width: 128px; min-width: 114px; height: auto; }
+  .pie nav { display: flex; gap: 26px; font-size: 14px; }
+  .pie nav a { text-decoration: none; }
+  .pie nav a:hover { color: var(--rosa); }
+  .redes { display: flex; gap: 12px; }
+  .redes a { width: 36px; height: 36px; border-radius: 50%; background: #ffffff2e; display: grid; place-items: center; }
+  .redes a:hover { background: #ffffff4d; }
+  .redes svg { width: 18px; height: 18px; fill: #fff; }
+  .legal { width: 100%; text-align: center; font-size: 12px; color: var(--gris); margin-top: 6px; }
+
+  /* aviso de video de muestra */
+  .aviso { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(20px); opacity: 0; background: #1e2229; color: #fff; padding: 12px 20px; border-radius: 10px; font-size: 14px; z-index: 99; transition: .25s; pointer-events: none; }
+  .aviso.ver { opacity: 1; transform: translateX(-50%); }
+
+  /* ---------- Responsivo ---------- */
+  @media (max-width: 1024px) {
+    .tarjeta { flex-basis: calc((100% - 2 * 22px) / 3); }
+    .agenda .contenedor { grid-template-columns: 1fr auto; }
+    .separador { display: none; }
+    .celular { grid-column: 1 / -1; justify-content: center; }
+  }
+  @media (max-width: 760px) {
+    html { scroll-padding-top: 64px; }
+    .barra .contenedor { height: 60px; }
+    .barra .logo img { height: 28px; }
+    .hamburguesa { display: grid; place-items: center; }
+    .menu { position: absolute; top: 60px; left: 0; right: 0; background: var(--barra); flex-direction: column; gap: 0; padding: 8px 16px 18px; box-shadow: 0 12px 20px #0006; display: none; }
+    .menu.abierto { display: flex; }
+    .menu li { width: 100%; }
+    .menu a { display: block; padding: 14px 4px; font-size: 16px; border-bottom: 1px solid #ffffff14; }
+    .menu .btn { display: flex; justify-content: center; margin-top: 12px; padding: 13px; border: 0; }
+    .hero .contenedor { grid-template-columns: 1fr; text-align: center; padding: 40px 0 120px; gap: 6px; }
+    .lockup { margin-inline: auto; }
+    .bajada { margin-inline: auto; }
+    .acciones { justify-content: center; }
+    .hero .huevos { width: min(86%, 380px); order: 2; margin-top: 18px; }
+    .ola { height: 80px; }
+    .tarjeta { flex-basis: 78%; }
+    .agenda { padding: 80px 0 56px; text-align: center; }
+    .agenda .contenedor { grid-template-columns: 1fr; gap: 26px; justify-items: center; }
+    .qr-bloque { display: none; }          /* en el celular no tiene sentido escanear: se usa el botón */
+    .celular { flex-direction: column; }
+    .pie .contenedor { justify-content: center; text-align: center; }
+    .pie nav { flex-wrap: wrap; justify-content: center; }
+  }
+  @media (prefers-reduced-motion: reduce) { html, .pista { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+
+<header class="barra">
+  <div class="contenedor">
+    <a class="logo" href="#inicio" aria-label="Bagó, inicio"><img src="img/logo-bago-blanco.svg" alt="Bagó"></a>
+    <button class="hamburguesa" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <ul class="menu" id="menu">
+      <li><a href="#campana">La campaña</a></li>
+      <li><a href="#expertos">Conoce más</a></li>
+      <li><a class="btn btn-magenta" href="#agenda">Agenda tu chequeo</a></li>
+    </ul>
+  </div>
+</header>
+
+<main>
+  <!-- HERO (KV) -->
+  <section class="hero" id="inicio">
+    <div class="contenedor">
+      <div class="hero-texto">
+        <h1 class="lockup"><img class="titular-kv" src="img/titular-kv.svg" alt="Ponle huevos a tu salud"></h1>
+        <p class="chequeo">Hazte un chequeo.</p>
+        <p class="bajada">Hoy puedes evaluar tu próstata con estudios no invasivos, como la ecografía.</p>
+        <div class="acciones">
+          <a class="btn btn-blanco" href="#agenda">Agenda tu chequeo
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
+          <a class="btn btn-borde" href="#expertos">Conoce más
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></a>
+        </div>
+      </div>
+      <img class="huevos" src="img/huevos.webp" alt="Dos huevos enteros y dos cascados, uno con la yema" width="1368" height="1150">
+    </div>
+    <svg class="ola" viewBox="0 0 1440 140" preserveAspectRatio="none" aria-hidden="true">
+      <path fill="#A2007D" d="M0 60 C 260 0 520 10 760 60 C 1000 110 1220 100 1440 40 L1440 140 L0 140 Z"/>
+      <path fill="#A2007D" d="M0 112 C 300 80 560 90 800 112 C 1040 134 1260 128 1440 100 L1440 140 L0 140 Z"/>
+    </svg>
+  </section>
+
+  <!-- VIDEO DE LA CAMPAÑA (tope a tope) -->
+  <section class="video-campana" id="campana" aria-label="Video de la campaña">
+    <img src="img/video-campana.webp" alt="" width="1672" height="941">
+    <button class="reproducir" data-video="campana" aria-label="Reproducir el video de la campaña">
+      <span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l15 8-15 8z"/></svg></span>
+      <span class="video-info"><small>Noviembre Azul · Bagó + Sofía</small><strong>Ponle huevos a tu salud</strong></span>
+      <span class="duracion">1:30</span>
+    </button>
+  </section>
+
+  <!-- BANNER DELGADO -->
+  <section class="banner" id="expertos">
+    <div class="contenedor">
+      <svg class="rayitas" viewBox="0 0 40 30" aria-hidden="true"><path d="M6 26 L14 6 M18 28 L30 8 M30 29 L38 20" stroke="#fff" stroke-width="4" stroke-linecap="round"/></svg>
+      <h2>Conoce la opinión de expertos</h2>
+      <svg class="rayitas" viewBox="0 0 40 30" aria-hidden="true" style="transform:scaleX(-1)"><path d="M6 26 L14 6 M18 28 L30 8 M30 29 L38 20" stroke="#fff" stroke-width="4" stroke-linecap="round"/></svg>
+    </div>
+  </section>
+
+  <!-- CARRUSEL DE DOCTORES -->
+  <section class="expertos" aria-label="Videos de especialistas">
+    <div class="contenedor">
+      <p class="intro">Especialistas en salud masculina responden en pocos minutos las dudas más comunes sobre el chequeo de próstata.</p>
+      <div class="carrusel">
+        <div class="pista" id="pista" tabindex="0" aria-label="Carrusel de videos, usá las flechas para avanzar"></div>
+        <div class="controles">
+          <button class="flecha" id="anterior" aria-label="Video anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+          <div class="puntos" id="puntos"></div>
+          <button class="flecha" id="siguiente" aria-label="Video siguiente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+        </div>
+        <div class="controles" style="margin-top:8px"><button class="pausa" id="pausa">Pausar el carrusel</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CIERRE: AGENDA -->
+  <section class="agenda" id="agenda">
+    <svg class="ola-sup" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+      <path fill="#B4239A" d="M0 0 H1440 V30 C 1180 80 900 86 640 52 C 400 22 180 30 0 62 Z"/>
+    </svg>
+    <div class="contenedor">
+      <h2><span>Hazte un chequeo.</span><b class="solo-escritorio">Escanea el código QR y agenda tu chequeo.</b><b class="solo-movil">Agenda tu chequeo hoy mismo.</b></h2>
+      <img class="qr qr-bloque" src="img/qr.png" alt="Código QR para agendar tu chequeo" width="447" height="447">
+      <div class="separador qr-bloque"></div>
+      <div class="celular">
+        <svg viewBox="0 0 48 72" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="40" height="66" rx="8"/><path d="M18 60h12" stroke-linecap="round"/></svg>
+        <div>
+          <p><span class="solo-escritorio">También puedes agendar desde tu celular.</span><span class="solo-movil">Es rápido y lo haces desde tu celular.</span></p>
+          <a class="btn btn-blanco" href="#" data-pendiente="agenda">Agendar mi chequeo</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="pie">
+  <div class="contenedor">
+    <div class="logos">
+      <img class="bago" src="img/logo-bago-blanco.svg" alt="Bagó">
+      <span class="sofia-neg"><img src="img/logo-sofia-negativo.svg" alt="Sofía"></span>
+    </div>
+    <nav aria-label="Pie de página">
+      <a href="#campana">La campaña</a>
+      <a href="#expertos">Conoce más</a>
+      <a href="#agenda">Agenda tu chequeo</a>
+    </nav>
+    <div class="redes">
+      <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M14 8h3V4h-3c-2.8 0-4.5 1.9-4.5 4.7V11H7v4h2.5v9h4v-9h3l.5-4h-3.5V9c0-.6.4-1 1-1z"/></svg></a>
+      <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 7.3A4.7 4.7 0 1 0 12 16.7 4.7 4.7 0 0 0 12 7.3zm0 7.7a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm4.9-8a1.1 1.1 0 1 1-2.2 0 1.1 1.1 0 0 1 2.2 0zM12 3.6c2.7 0 3 0 4.1.1 2.8.1 4.1 1.4 4.2 4.2.1 1.1.1 1.4.1 4.1s0 3-.1 4.1c-.1 2.8-1.4 4.1-4.2 4.2-1.1.1-1.4.1-4.1.1s-3 0-4.1-.1c-2.8-.1-4.1-1.4-4.2-4.2C3.6 15 3.6 14.7 3.6 12s0-3 .1-4.1C3.8 5.1 5.1 3.8 7.9 3.7 9 3.6 9.3 3.6 12 3.6z"/></svg></a>
+      <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M22 8.2a3 3 0 0 0-2.1-2.1C18 5.6 12 5.6 12 5.6s-6 0-7.9.5A3 3 0 0 0 2 8.2 31 31 0 0 0 1.6 12 31 31 0 0 0 2 15.8a3 3 0 0 0 2.1 2.1c1.9.5 7.9.5 7.9.5s6 0 7.9-.5a3 3 0 0 0 2.1-2.1c.4-1.2.4-3.8.4-3.8s0-2.6-.4-3.8zM10 15.1V8.9l5.2 3.1L10 15.1z"/></svg></a>
+      <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M5 8.5h3.4V20H5zM6.7 3a2 2 0 1 1 0 4 2 2 0 0 1 0-4zM10.5 8.5h3.3v1.6c.5-.9 1.6-1.9 3.4-1.9 3.6 0 4.3 2.4 4.3 5.4V20h-3.4v-5.6c0-1.3 0-3-1.9-3s-2.2 1.5-2.2 2.9V20h-3.4z"/></svg></a>
+    </div>
+    <p class="legal">«Ponle huevos a tu salud» es una iniciativa de responsabilidad social de Bagó junto a huevos Sofía. Este sitio no reemplaza la consulta médica. © 2026 Bagó.</p>
+  </div>
+</footer>
+
+<div class="aviso" id="aviso" role="status"></div>
+
+<script>
+/* ===== Datos de los 9 especialistas (NOMBRES Y DIRECCIONES DE MUESTRA: reemplazar por los reales) ===== */
+const doctores = [
+  { nombre: "Dr. Carlos Mendoza Rivero",   esp: "Urólogo",               dir: "Av. San Martín 1650, Equipetrol, Santa Cruz de la Sierra", tema: "¿A qué edad hacer el primer chequeo?",       dur: "1:12" },
+  { nombre: "Dra. Lucía Fernández Arce",   esp: "Uróloga",               dir: "Calle 21 de Calacoto 8045, La Paz",                         tema: "Qué esperar en tu primera consulta",         dur: "0:58" },
+  { nombre: "Dr. Marcelo Gutiérrez Paz",   esp: "Urólogo",               dir: "Av. América E-0452, Cochabamba",                            tema: "La ecografía: rápida y sin dolor",            dur: "1:05" },
+  { nombre: "Dr. Javier Rojas Salvatierra",esp: "Urólogo",               dir: "Av. Cristo Redentor 2850, Santa Cruz de la Sierra",         tema: "Mitos sobre el examen de próstata",           dur: "1:20" },
+  { nombre: "Dra. Paola Vargas Céspedes",  esp: "Médica de familia",     dir: "Av. 6 de Agosto 2170, Sopocachi, La Paz",                   tema: "Hablar de salud también es cuidar",           dur: "0:47" },
+  { nombre: "Dr. Ricardo Antezana Molina", esp: "Urólogo",               dir: "Calle Junín 345, Sucre",                                    tema: "Síntomas que no hay que ignorar",             dur: "1:09" },
+  { nombre: "Dr. Andrés Quiroga Saavedra", esp: "Oncólogo",              dir: "Av. Beni 567, Santa Cruz de la Sierra",                     tema: "La detección temprana salva vidas",           dur: "1:31" },
+  { nombre: "Dr. Fernando Claure Ríos",    esp: "Urólogo",               dir: "Av. Ballivián 789, Cala Cala, Cochabamba",                  tema: "Antecedentes familiares: qué saber",          dur: "0:54" },
+  { nombre: "Dra. Gabriela Suárez Ortiz",  esp: "Radióloga (ecografía)", dir: "Calle Sucre 210, Tarija",                                   tema: "Cómo es una ecografía de próstata",           dur: "1:02" },
+];
+
+/* Retrato ilustrado que simula el cuadro de un video (se reemplaza por la miniatura real) */
+const pieles = ["#c98f6b", "#e0b08f", "#a8714f", "#d9a27e", "#b98060", "#e6bc9c", "#9c6646", "#d39b75", "#edc5a6"];
+const pelos  = ["#2b1d16", "#4a2f22", "#151010", "#5b3a26", "#1f1a17", "#6b4a33", "#0f0c0b", "#3a2a20", "#7a5236"];
+const fondos = [["#bfe6fb","#7cc6ef"],["#d9e7f5","#a7c4e3"],["#cfeef0","#88cfd6"],["#e3e9f2","#b3c2d9"],["#f3e6ef","#d8b4cd"],["#d6ecfb","#94c9ef"],["#e6efe9","#aac9b5"],["#dde6f7","#a2b6e6"],["#f6ebe2","#dcc0a8"]];
+function retrato(i, mujer) {
+  const [f1, f2] = fondos[i], piel = pieles[i], pelo = pelos[i];
+  const pelaje = mujer
+    ? `<path transform="translate(0 140)" d="M118 150c0-55 36-80 72-80s72 25 72 80v95c-10 20-30 22-38 20 6-30 6-60-6-80-20 10-56 12-84 2-14 22-12 54-6 78-8 2-24-2-30-20z" fill="${pelo}"/>`
+    : `<path transform="translate(0 140)" d="M128 150c0-48 30-72 62-72s62 22 62 70c-8-14-20-24-34-26-22 8-52 8-74 0-8 6-14 16-16 28z" fill="${pelo}"/>`;
+  return `<svg class="retrato" viewBox="0 0 360 640" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs><linearGradient id="g${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${f1}"/><stop offset="1" stop-color="${f2}"/></linearGradient></defs>
+    <rect width="360" height="640" fill="url(#g${i})"/>
+    <rect x="236" y="60" width="96" height="150" rx="6" fill="#ffffff55"/><rect x="246" y="72" width="76" height="60" rx="3" fill="#ffffff70"/>
+    <rect x="22" y="300" width="70" height="200" rx="6" fill="#ffffff35"/>
+    <path d="M40 640c6-120 60-190 150-196 90 6 144 76 150 196z" fill="#ffffff"/>
+    <path d="M150 446l40 60 40-60" fill="none" stroke="#e8edf3" stroke-width="10"/>
+    <path d="M168 452 190 640 212 452z" fill="#1f5fa8"/>
+    <rect x="166" y="352" width="48" height="70" rx="20" fill="${piel}"/>
+    <ellipse cx="190" cy="300" rx="64" ry="78" fill="${piel}"/>
+    ${pelaje}
+    <path d="M120 470c-6 50 4 92 34 104" fill="none" stroke="#3a4250" stroke-width="7" stroke-linecap="round"/>
+    <circle cx="160" cy="580" r="13" fill="#9aa4b2"/>
+    <rect x="232" y="500" width="54" height="14" rx="4" fill="#A2007D" opacity=".85"/>
+  </svg>`;
+}
+
+const iconoMapa = '<svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>';
+const pista = document.getElementById("pista");
+pista.innerHTML = doctores.map((d, i) => {
+  const mapa = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(d.dir + ", Bolivia");
+  return `<article class="tarjeta">
+    <button class="clip" data-video="${i}" aria-label="Reproducir el video de ${d.nombre}: ${d.tema}">
+      ${retrato(i, d.nombre.startsWith("Dra."))}
+      <img class="marca" src="img/logo-bago-blanco.svg" alt="">
+      <span class="dur">${d.dur}</span>
+      <span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l15 8-15 8z"/></svg></span>
+      <span class="tema">${d.tema}</span>
+    </button>
+    <div class="datos">
+      <h3>${d.nombre}</h3>
+      <span class="esp">${d.esp}</span>
+      <address>${d.dir}</address>
+      <a class="mapa" href="${mapa}" target="_blank" rel="noopener">${iconoMapa} Ver en Google Maps</a>
+    </div>
+  </article>`;
+}).join("");
+
+/* ===== Carrusel: botones, puntos, avance automático ===== */
+const tarjetas = [...pista.children];
+const puntos = document.getElementById("puntos");
+puntos.innerHTML = tarjetas.map((_, i) => `<button aria-label="Ir al video ${i + 1}"></button>`).join("");
+const botonesPunto = [...puntos.children];
+const paso = () => tarjetas[1].offsetLeft - tarjetas[0].offsetLeft;
+const visibles = () => Math.max(1, Math.round(pista.clientWidth / paso()));
+const actual = () => Math.round(pista.scrollLeft / paso());
+const ultimo = () => tarjetas.length - visibles();
+function ir(i) {
+  if (i > ultimo()) i = 0;
+  if (i < 0) i = ultimo();
+  pista.scrollTo({ left: i * paso() });
+}
+function marcar() { const a = actual(); botonesPunto.forEach((b, i) => b.setAttribute("aria-current", i === a)); }
+pista.addEventListener("scroll", () => requestAnimationFrame(marcar), { passive: true });
+document.getElementById("anterior").onclick = () => { ir(actual() - 1); reiniciar(); };
+document.getElementById("siguiente").onclick = () => { ir(actual() + 1); reiniciar(); };
+botonesPunto.forEach((b, i) => b.onclick = () => { ir(Math.min(i, ultimo())); reiniciar(); });
+pista.addEventListener("keydown", e => {
+  if (e.key === "ArrowRight") { e.preventDefault(); ir(actual() + 1); reiniciar(); }
+  if (e.key === "ArrowLeft")  { e.preventDefault(); ir(actual() - 1); reiniciar(); }
+});
+
+const reducido = matchMedia("(prefers-reduced-motion: reduce)").matches;
+let pausado = reducido, sobre = false, temporizador;
+const botonPausa = document.getElementById("pausa");
+function reiniciar() {
+  clearInterval(temporizador);
+  temporizador = setInterval(() => { if (!pausado && !sobre && !document.hidden) ir(actual() + 1); }, 4000);
+}
+botonPausa.textContent = pausado ? "Reanudar el carrusel" : "Pausar el carrusel";
+botonPausa.onclick = () => { pausado = !pausado; botonPausa.textContent = pausado ? "Reanudar el carrusel" : "Pausar el carrusel"; };
+const carrusel = document.querySelector(".carrusel");
+carrusel.addEventListener("mouseenter", () => sobre = true);
+carrusel.addEventListener("mouseleave", () => sobre = false);
+carrusel.addEventListener("focusin", () => sobre = true);
+carrusel.addEventListener("focusout", () => sobre = false);
+pista.addEventListener("touchstart", () => { sobre = true; }, { passive: true });
+pista.addEventListener("touchend", () => { setTimeout(() => sobre = false, 3000); }, { passive: true });
+marcar(); reiniciar();
+
+/* ===== Videos de muestra y enlaces pendientes ===== */
+const aviso = document.getElementById("aviso");
+function avisar(t) { aviso.textContent = t; aviso.classList.add("ver"); clearTimeout(aviso._t); aviso._t = setTimeout(() => aviso.classList.remove("ver"), 2600); }
+document.querySelectorAll("[data-video]").forEach(b => b.addEventListener("click", () =>
+  avisar(b.dataset.video === "campana" ? "Aquí se reproducirá el video de la campaña." : `Aquí se reproducirá el video de ${doctores[b.dataset.video].nombre}.`)));
+document.querySelectorAll("[data-pendiente]").forEach(a => a.addEventListener("click", e => { e.preventDefault(); avisar("Falta el enlace para agendar (WhatsApp o formulario)."); }));
+
+/* ===== Menú en el celular ===== */
+const hamb = document.querySelector(".hamburguesa"), menu = document.getElementById("menu");
+hamb.onclick = () => { const a = menu.classList.toggle("abierto"); hamb.setAttribute("aria-expanded", a); };
+menu.querySelectorAll("a").forEach(a => a.addEventListener("click", () => { menu.classList.remove("abierto"); hamb.setAttribute("aria-expanded", false); }));
+</script>
+</body>
+</html>

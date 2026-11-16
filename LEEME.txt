@@ -1,0 +1,11 @@
+LANDING «PONLE HUEVOS A TU SALUD»
+
+final/     capturas de página completa: escritorio 1440 px y celular 375 px (@2x), en PNG RGB (pantalla) y JPG CMYK.
+editable/sitio-web/   sitio completo y autocontenido para el programador: index.html + img/ + fuentes/.
+           Se abre directo en el navegador. Responsivo (celular / escritorio).
+
+PENDIENTE PARA PUBLICAR (marcado en el código):
+- Videos reales (campaña + 9 especialistas): hoy hay imágenes de muestra con botón de play.
+- Nombres, especialidades y direcciones reales de los doctores (los actuales son de muestra).
+- Enlace del botón "Agendar mi chequeo" (WhatsApp o formulario) y enlaces a redes de Bagó.
+- Licencia de la fuente DEMO del titular (en el sitio el titular ya va como imagen vectorial).
