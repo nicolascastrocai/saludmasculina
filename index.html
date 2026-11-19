@@ -100,7 +100,9 @@
   .pista::-webkit-scrollbar { display: none; }
   .tarjeta { flex: 0 0 calc((100% - 3 * 22px) / 4); scroll-snap-align: start; background: var(--tarjeta); border-radius: 18px; overflow: hidden; box-shadow: 0 10px 26px #6d00552e; display: flex; flex-direction: column; }
   .clip { position: relative; aspect-ratio: 9 / 16; overflow: hidden; border: 0; padding: 0; cursor: pointer; display: block; width: 100%; background: #cfe9f8; }
-  .clip svg.retrato { width: 100%; height: 100%; display: block; }
+  .clip video { width: 100%; height: 100%; object-fit: cover; display: block; background: #000; }
+  .clip .reproducir-clip { position: absolute; inset: 0; border: 0; padding: 0; background: linear-gradient(180deg, #0000 60%, #0006); cursor: pointer; }
+  .clip.activo .reproducir-clip, .clip.activo .marca, .clip.activo .dur { display: none; }
   .clip .play { position: absolute; left: 50%; top: 74%; transform: translate(-50%, -50%); width: 64px; }
   .clip:hover .play { transform: translate(-50%, -50%) scale(1.08); }
   .clip .tema { position: absolute; left: 0; right: 0; bottom: 0; padding: 40px 14px 14px; text-align: left; color: #fff; font-weight: 700; font-size: 15px; line-height: 1.3; background: linear-gradient(180deg, #0000, #000b); }
@@ -203,7 +205,6 @@
     <ul class="menu" id="menu">
       <li><a href="#campana">La campaña</a></li>
       <li><a href="#expertos">Conoce más</a></li>
-      <li><a class="btn btn-magenta" href="#agenda">Agenda tu chequeo</a></li>
     </ul>
   </div>
 </header>
@@ -217,8 +218,6 @@
         <p class="chequeo">Hazte un chequeo.</p>
         <p class="bajada">Hoy puedes evaluar tu próstata con estudios no invasivos, como la ecografía.</p>
         <div class="acciones">
-          <a class="btn btn-blanco" href="#agenda">Agenda tu chequeo
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
           <a class="btn btn-borde" href="#expertos">Conoce más
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></a>
         </div>
@@ -266,24 +265,6 @@
     </div>
   </section>
 
-  <!-- CIERRE: AGENDA -->
-  <section class="agenda" id="agenda">
-    <svg class="ola-sup" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
-      <path fill="#B4239A" d="M0 0 H1440 V30 C 1180 80 900 86 640 52 C 400 22 180 30 0 62 Z"/>
-    </svg>
-    <div class="contenedor">
-      <h2><span>Hazte un chequeo.</span><b class="solo-escritorio">Escanea el código QR y agenda tu chequeo.</b><b class="solo-movil">Agenda tu chequeo hoy mismo.</b></h2>
-      <img class="qr qr-bloque" src="img/qr.png" alt="Código QR para agendar tu chequeo" width="447" height="447">
-      <div class="separador qr-bloque"></div>
-      <div class="celular">
-        <svg viewBox="0 0 48 72" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="40" height="66" rx="8"/><path d="M18 60h12" stroke-linecap="round"/></svg>
-        <div>
-          <p><span class="solo-escritorio">También puedes agendar desde tu celular.</span><span class="solo-movil">Es rápido y lo haces desde tu celular.</span></p>
-          <a class="btn btn-blanco" href="#" data-pendiente="agenda">Agendar mi chequeo</a>
-        </div>
-      </div>
-    </div>
-  </section>
 </main>
 
 <footer class="pie">
@@ -295,7 +276,6 @@
     <nav aria-label="Pie de página">
       <a href="#campana">La campaña</a>
       <a href="#expertos">Conoce más</a>
-      <a href="#agenda">Agenda tu chequeo</a>
     </nav>
     <div class="redes">
       <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M14 8h3V4h-3c-2.8 0-4.5 1.9-4.5 4.7V11H7v4h2.5v9h4v-9h3l.5-4h-3.5V9c0-.6.4-1 1-1z"/></svg></a>
@@ -310,65 +290,48 @@
 <div class="aviso" id="aviso" role="status"></div>
 
 <script>
-/* ===== Datos de los 9 especialistas (NOMBRES Y DIRECCIONES DE MUESTRA: reemplazar por los reales) ===== */
+/* ===== Videos de los especialistas (en el orden de la carpeta img/videos) ===== */
 const doctores = [
-  { nombre: "Dr. Carlos Mendoza Rivero",   esp: "Urólogo",               dir: "Av. San Martín 1650, Equipetrol, Santa Cruz de la Sierra", tema: "¿A qué edad hacer el primer chequeo?",       dur: "1:12" },
-  { nombre: "Dra. Lucía Fernández Arce",   esp: "Uróloga",               dir: "Calle 21 de Calacoto 8045, La Paz",                         tema: "Qué esperar en tu primera consulta",         dur: "0:58" },
-  { nombre: "Dr. Marcelo Gutiérrez Paz",   esp: "Urólogo",               dir: "Av. América E-0452, Cochabamba",                            tema: "La ecografía: rápida y sin dolor",            dur: "1:05" },
-  { nombre: "Dr. Javier Rojas Salvatierra",esp: "Urólogo",               dir: "Av. Cristo Redentor 2850, Santa Cruz de la Sierra",         tema: "Mitos sobre el examen de próstata",           dur: "1:20" },
-  { nombre: "Dra. Paola Vargas Céspedes",  esp: "Médica de familia",     dir: "Av. 6 de Agosto 2170, Sopocachi, La Paz",                   tema: "Hablar de salud también es cuidar",           dur: "0:47" },
-  { nombre: "Dr. Ricardo Antezana Molina", esp: "Urólogo",               dir: "Calle Junín 345, Sucre",                                    tema: "Síntomas que no hay que ignorar",             dur: "1:09" },
-  { nombre: "Dr. Andrés Quiroga Saavedra", esp: "Oncólogo",              dir: "Av. Beni 567, Santa Cruz de la Sierra",                     tema: "La detección temprana salva vidas",           dur: "1:31" },
-  { nombre: "Dr. Fernando Claure Ríos",    esp: "Urólogo",               dir: "Av. Ballivián 789, Cala Cala, Cochabamba",                  tema: "Antecedentes familiares: qué saber",          dur: "0:54" },
-  { nombre: "Dra. Gabriela Suárez Ortiz",  esp: "Radióloga (ecografía)", dir: "Calle Sucre 210, Tarija",                                   tema: "Cómo es una ecografía de próstata",           dur: "1:02" },
+  { nombre: "Dr. Fernando Antelo",  ciudad: "Santa Cruz", video: "DR-FERNANDO-ANTELO-SANTACRUZ.mp4" },
+  { nombre: "Dr. Hugo Dura",        ciudad: "La Paz",     video: "DR-HUGO-DURA-LAPAZ.mp4" },
+  { nombre: "Dr. Jairo Prada",      ciudad: "Santa Cruz", video: "DR-JAIRO-PRADA-SANTACRUZ.mp4" },
+  { nombre: "Dr. Roberto Mantilla", ciudad: "La Paz",     video: "DR-ROBERTO-MANTILLA-LAPAZ(1).mp4" },
+  { nombre: "Dr. Javier Arancibia", ciudad: "",           video: "Dr. Javier Arancibia.mp4" },
+  { nombre: "Dr. Javier Ferrufino", ciudad: "",           video: "Dr. Javier Ferrufino.mp4" },
+  { nombre: "Dr. Mariano Silva",    ciudad: "",           video: "Dr. Mariano Silva.mp4" },
+  { nombre: "Dr. Sergio Brito",     ciudad: "",           video: "Dr. Sergio Brito.mp4" },
 ];
 
-/* Retrato ilustrado que simula el cuadro de un video (se reemplaza por la miniatura real) */
-const pieles = ["#c98f6b", "#e0b08f", "#a8714f", "#d9a27e", "#b98060", "#e6bc9c", "#9c6646", "#d39b75", "#edc5a6"];
-const pelos  = ["#2b1d16", "#4a2f22", "#151010", "#5b3a26", "#1f1a17", "#6b4a33", "#0f0c0b", "#3a2a20", "#7a5236"];
-const fondos = [["#bfe6fb","#7cc6ef"],["#d9e7f5","#a7c4e3"],["#cfeef0","#88cfd6"],["#e3e9f2","#b3c2d9"],["#f3e6ef","#d8b4cd"],["#d6ecfb","#94c9ef"],["#e6efe9","#aac9b5"],["#dde6f7","#a2b6e6"],["#f6ebe2","#dcc0a8"]];
-function retrato(i, mujer) {
-  const [f1, f2] = fondos[i], piel = pieles[i], pelo = pelos[i];
-  const pelaje = mujer
-    ? `<path transform="translate(0 140)" d="M118 150c0-55 36-80 72-80s72 25 72 80v95c-10 20-30 22-38 20 6-30 6-60-6-80-20 10-56 12-84 2-14 22-12 54-6 78-8 2-24-2-30-20z" fill="${pelo}"/>`
-    : `<path transform="translate(0 140)" d="M128 150c0-48 30-72 62-72s62 22 62 70c-8-14-20-24-34-26-22 8-52 8-74 0-8 6-14 16-16 28z" fill="${pelo}"/>`;
-  return `<svg class="retrato" viewBox="0 0 360 640" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-    <defs><linearGradient id="g${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${f1}"/><stop offset="1" stop-color="${f2}"/></linearGradient></defs>
-    <rect width="360" height="640" fill="url(#g${i})"/>
-    <rect x="236" y="60" width="96" height="150" rx="6" fill="#ffffff55"/><rect x="246" y="72" width="76" height="60" rx="3" fill="#ffffff70"/>
-    <rect x="22" y="300" width="70" height="200" rx="6" fill="#ffffff35"/>
-    <path d="M40 640c6-120 60-190 150-196 90 6 144 76 150 196z" fill="#ffffff"/>
-    <path d="M150 446l40 60 40-60" fill="none" stroke="#e8edf3" stroke-width="10"/>
-    <path d="M168 452 190 640 212 452z" fill="#1f5fa8"/>
-    <rect x="166" y="352" width="48" height="70" rx="20" fill="${piel}"/>
-    <ellipse cx="190" cy="300" rx="64" ry="78" fill="${piel}"/>
-    ${pelaje}
-    <path d="M120 470c-6 50 4 92 34 104" fill="none" stroke="#3a4250" stroke-width="7" stroke-linecap="round"/>
-    <circle cx="160" cy="580" r="13" fill="#9aa4b2"/>
-    <rect x="232" y="500" width="54" height="14" rx="4" fill="#A2007D" opacity=".85"/>
-  </svg>`;
-}
-
-const iconoMapa = '<svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>';
 const pista = document.getElementById("pista");
-pista.innerHTML = doctores.map((d, i) => {
-  const mapa = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(d.dir + ", Bolivia");
-  return `<article class="tarjeta">
-    <button class="clip" data-video="${i}" aria-label="Reproducir el video de ${d.nombre}: ${d.tema}">
-      ${retrato(i, d.nombre.startsWith("Dra."))}
+pista.innerHTML = doctores.map(d => `<article class="tarjeta">
+    <div class="clip">
+      <video src="img/videos/${encodeURI(d.video)}#t=0.1" preload="metadata" playsinline></video>
       <img class="marca" src="img/logo-bago-blanco.svg" alt="">
-      <span class="dur">${d.dur}</span>
-      <span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l15 8-15 8z"/></svg></span>
-      <span class="tema">${d.tema}</span>
-    </button>
+      <span class="dur"></span>
+      <button class="reproducir-clip" aria-label="Reproducir el video de ${d.nombre}">
+        <span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l15 8-15 8z"/></svg></span>
+      </button>
+    </div>
     <div class="datos">
       <h3>${d.nombre}</h3>
-      <span class="esp">${d.esp}</span>
-      <address>${d.dir}</address>
-      <a class="mapa" href="${mapa}" target="_blank" rel="noopener">${iconoMapa} Ver en Google Maps</a>
+      ${d.ciudad ? `<span class="esp">${d.ciudad}</span>` : ""}
     </div>
-  </article>`;
-}).join("");
+  </article>`).join("");
+
+pista.querySelectorAll(".clip").forEach(clip => {
+  const v = clip.querySelector("video"), dur = clip.querySelector(".dur");
+  v.addEventListener("loadedmetadata", () => {
+    const s = Math.round(v.duration);
+    dur.textContent = Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+  });
+  clip.querySelector(".reproducir-clip").onclick = () => {
+    pista.querySelectorAll("video").forEach(o => { if (o !== v) o.pause(); });
+    clip.classList.add("activo");
+    v.controls = true;
+    v.play();
+  };
+});
+const algunoSonando = () => [...pista.querySelectorAll("video")].some(v => !v.paused);
 
 /* ===== Carrusel: botones, puntos, avance automático ===== */
 const tarjetas = [...pista.children];
@@ -399,7 +362,7 @@ let pausado = reducido, sobre = false, temporizador;
 const botonPausa = document.getElementById("pausa");
 function reiniciar() {
   clearInterval(temporizador);
-  temporizador = setInterval(() => { if (!pausado && !sobre && !document.hidden) ir(actual() + 1); }, 4000);
+  temporizador = setInterval(() => { if (!pausado && !sobre && !document.hidden && !algunoSonando()) ir(actual() + 1); }, 4000);
 }
 botonPausa.textContent = pausado ? "Reanudar el carrusel" : "Pausar el carrusel";
 botonPausa.onclick = () => { pausado = !pausado; botonPausa.textContent = pausado ? "Reanudar el carrusel" : "Pausar el carrusel"; };
@@ -416,8 +379,7 @@ marcar(); reiniciar();
 const aviso = document.getElementById("aviso");
 function avisar(t) { aviso.textContent = t; aviso.classList.add("ver"); clearTimeout(aviso._t); aviso._t = setTimeout(() => aviso.classList.remove("ver"), 2600); }
 document.querySelectorAll("[data-video]").forEach(b => b.addEventListener("click", () =>
-  avisar(b.dataset.video === "campana" ? "Aquí se reproducirá el video de la campaña." : `Aquí se reproducirá el video de ${doctores[b.dataset.video].nombre}.`)));
-document.querySelectorAll("[data-pendiente]").forEach(a => a.addEventListener("click", e => { e.preventDefault(); avisar("Falta el enlace para agendar (WhatsApp o formulario)."); }));
+  avisar("Aquí se reproducirá el video de la campaña.")));
 
 /* ===== Menú en el celular ===== */
 const hamb = document.querySelector(".hamburguesa"), menu = document.getElementById("menu");
