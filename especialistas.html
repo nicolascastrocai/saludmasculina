@@ -28,7 +28,7 @@
   .cabecera h1 { font-size: clamp(26px, 3.4vw, 40px); line-height: 1.15; }
   .cabecera p { color: var(--gris); margin-top: 10px; }
 
-  .filtros { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .filtros { display: grid; grid-template-columns: 2fr 1fr; gap: 14px; margin-bottom: 14px; }
   .filtros label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 700; }
   .filtros input, .filtros select { font: inherit; font-size: 15px; padding: 12px 14px; border-radius: 12px; border: 0; color: #3b1533; background: #fff; }
   .filtros input:focus, .filtros select:focus { outline: 3px solid #ffe066; }
@@ -87,11 +87,8 @@
     <label>Buscar
       <input type="search" id="buscar" placeholder="Ej.: Pérez, Hospital Obrero, Cochabamba…" autocomplete="off">
     </label>
-    <label>Región
-      <select id="region"><option value="">Todas</option></select>
-    </label>
-    <label>Zona
-      <select id="zona"><option value="">Todas</option></select>
+    <label>Ciudad
+      <select id="ciudad"><option value="">Todas</option></select>
     </label>
   </div>
   <p class="conteo" id="conteo" role="status"></p>
@@ -111,21 +108,14 @@
 <script src="especialistas-datos.js"></script>
 <script>
 const columnas = [
-  { k: "estado",         t: "Estado de visita" },
-  { k: "region",         t: "Región" },
-  { k: "zona",           t: "Zona" },
-  { k: "rut",            t: "RUT" },
   { k: "medico",         t: "Médico" },
+  { k: "ciudad",         t: "Ciudad" },
   { k: "esp",            t: "Especialidad" },
-  { k: "sesp",           t: "Subespecialidad" },
-  { k: "categoria",      t: "Categoría" },
-  { k: "fono",           t: "Teléfono" },
   { k: "telConsultorio", t: "Teléfono consultorio" },
   { k: "celular",        t: "Celular" },
   { k: "direccion",      t: "Dirección" },
-  { k: "email",          t: "Email" },
 ];
-const telefonos = ["fono", "telConsultorio", "celular"];
+const telefonos = ["telConsultorio", "celular"];
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const normal = s => String(s).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
@@ -134,32 +124,23 @@ function celda(d, c) {
   const v = d[c.k] || "";
   if (!v) return "";
   if (telefonos.includes(c.k)) return `<a href="tel:${esc(v.replace(/[^\d+]/g, ""))}">${esc(v)}</a>`;
-  if (c.k === "email" && v.includes("@")) return `<a href="mailto:${esc(v)}">${esc(v)}</a>`;
   return esc(v);
 }
 
 document.getElementById("encabezados").innerHTML = columnas.map(c => `<th scope="col">${c.t}</th>`).join("");
 
-const selRegion = document.getElementById("region"), selZona = document.getElementById("zona");
+const selCiudad = document.getElementById("ciudad");
 const buscar = document.getElementById("buscar"), filas = document.getElementById("filas"), conteo = document.getElementById("conteo");
 const unicos = k => [...new Set(especialistas.map(d => d[k]).filter(Boolean))].sort((a, b) => a.localeCompare(b, "es"));
 const opciones = lista => '<option value="">Todas</option>' + lista.map(v => `<option>${esc(v)}</option>`).join("");
-selRegion.innerHTML = opciones(unicos("region"));
-
-function actualizarZonas() {
-  const actual = selZona.value;
-  const zonas = [...new Set(especialistas.filter(d => !selRegion.value || d.region === selRegion.value).map(d => d.zona).filter(Boolean))].sort((a, b) => a.localeCompare(b, "es"));
-  selZona.innerHTML = opciones(zonas);
-  if (zonas.includes(actual)) selZona.value = actual;
-}
+selCiudad.innerHTML = opciones(unicos("ciudad"));
 
 const indice = especialistas.map(d => normal(columnas.map(c => d[c.k]).join(" ")));
 
 function pintar() {
   const q = normal(buscar.value.trim());
   const res = especialistas.filter((d, i) =>
-    (!selRegion.value || d.region === selRegion.value) &&
-    (!selZona.value || d.zona === selZona.value) &&
+    (!selCiudad.value || d.ciudad === selCiudad.value) &&
     (!q || q.split(/\s+/).every(p => indice[i].includes(p))));
   filas.innerHTML = res.length
     ? res.map(d => `<tr>${columnas.map(c => `<td class="${c.k}" data-label="${c.t}">${celda(d, c)}</td>`).join("")}</tr>`).join("")
@@ -168,9 +149,7 @@ function pintar() {
 }
 
 buscar.addEventListener("input", pintar);
-selRegion.addEventListener("change", () => { actualizarZonas(); pintar(); });
-selZona.addEventListener("change", pintar);
-actualizarZonas();
+selCiudad.addEventListener("change", pintar);
 pintar();
 </script>
 </body>
