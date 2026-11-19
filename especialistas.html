@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#A2007D">
+<title>Encuentra un especialista — Ponle huevos a tu salud</title>
+<meta name="description" content="Listado de especialistas en urología de Bolivia.">
+<style>
+  @font-face { font-family: "Montserrat"; font-weight: 500; src: url("fuentes/Montserrat-Medium.otf"); font-display: swap; }
+  @font-face { font-family: "Montserrat"; font-weight: 700; src: url("fuentes/Montserrat-Bold.otf"); font-display: swap; }
+  @font-face { font-family: "Playlist"; src: url("fuentes/Playlist Script.otf"); font-display: swap; }
+
+  :root { --magenta: #A2007D; --magenta-osc: #7d0061; --fondo: #B4239A; --gris: #fde6f6; --celeste: #0870b8; --ancho: 1280px; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Montserrat", system-ui, sans-serif; font-weight: 500; color: #fff; background: var(--fondo); line-height: 1.5; }
+  a { color: inherit; }
+  .contenedor { width: min(var(--ancho), 100% - 32px); margin-inline: auto; }
+
+  .barra { position: sticky; top: 0; z-index: 50; background: var(--magenta); box-shadow: 0 4px 18px #0006; }
+  .barra .contenedor { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+  .barra img { height: 34px; width: auto; display: block; }
+  .volver { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 700; font-size: 14px; background: #fff; color: var(--magenta); border-radius: 999px; padding: 9px 20px; }
+  .volver:hover { background: #ffe6f6; }
+
+  .cabecera { padding: 44px 0 26px; text-align: center; }
+  .cabecera span { font-family: "Playlist", cursive; font-size: clamp(36px, 5vw, 56px); line-height: 1; display: block; }
+  .cabecera h1 { font-size: clamp(26px, 3.4vw, 40px); line-height: 1.15; }
+  .cabecera p { color: var(--gris); margin-top: 10px; }
+
+  .filtros { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .filtros label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 700; }
+  .filtros input, .filtros select { font: inherit; font-size: 15px; padding: 12px 14px; border-radius: 12px; border: 0; color: #3b1533; background: #fff; }
+  .filtros input:focus, .filtros select:focus { outline: 3px solid #ffe066; }
+  .conteo { font-size: 14px; color: var(--gris); margin-bottom: 12px; }
+
+  .tabla-wrap { background: #fff; border-radius: 18px; overflow: auto; max-height: 75vh; box-shadow: 0 10px 26px #6d00552e; margin-bottom: 56px; }
+  table { width: 100%; border-collapse: collapse; color: #3b1533; font-size: 13.5px; }
+  th { position: sticky; top: 0; background: var(--magenta); color: #fff; text-align: left; padding: 12px 12px; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; }
+  td { padding: 10px 12px; border-bottom: 1px solid #f1dcea; vertical-align: top; }
+  tbody tr:nth-child(even) { background: #fdf4fa; }
+  tbody tr:hover { background: #fbe3f3; }
+  td.medico { font-weight: 700; color: var(--magenta); min-width: 200px; }
+  td.direccion { min-width: 220px; }
+  td a { color: var(--celeste); font-weight: 700; text-decoration: none; white-space: nowrap; }
+  td a:hover { text-decoration: underline; }
+  .vacio { text-align: center; padding: 40px 16px; color: #7a4a70; }
+
+  .pie { background: var(--magenta); padding: 22px 0; text-align: center; font-size: 12px; color: var(--gris); }
+
+  @media (max-width: 760px) {
+    .barra .contenedor { height: 60px; }
+    .barra img { height: 28px; }
+    .filtros { grid-template-columns: 1fr; }
+    .tabla-wrap { max-height: none; background: transparent; box-shadow: none; overflow: visible; }
+    table, tbody, tr, td { display: block; }
+    thead { display: none; }
+    tbody tr { background: #fff !important; border-radius: 14px; padding: 10px 14px; margin-bottom: 12px; box-shadow: 0 6px 18px #6d005530; }
+    td { border: 0; padding: 4px 0; display: flex; gap: 10px; }
+    td::before { content: attr(data-label); flex: 0 0 42%; font-size: 11px; font-weight: 700; text-transform: uppercase; color: #9a6b8e; padding-top: 2px; }
+    td.medico { font-size: 16px; min-width: 0; }
+    td.medico::before { display: none; }
+    td.direccion { min-width: 0; }
+    td:empty { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="barra">
+  <div class="contenedor">
+    <a href="index.html" aria-label="Bagó, inicio"><img src="img/logo-bago-blanco.svg" alt="Bagó"></a>
+    <a class="volver" href="index.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+      Volver al inicio</a>
+  </div>
+</header>
+
+<main class="contenedor">
+  <section class="cabecera">
+    <span>Hazte un chequeo.</span>
+    <h1>Encuentra un especialista</h1>
+    <p>Busca por nombre, ciudad, dirección o especialidad.</p>
+  </section>
+
+  <div class="filtros">
+    <label>Buscar
+      <input type="search" id="buscar" placeholder="Ej.: Pérez, Hospital Obrero, Cochabamba…" autocomplete="off">
+    </label>
+    <label>Región
+      <select id="region"><option value="">Todas</option></select>
+    </label>
+    <label>Zona
+      <select id="zona"><option value="">Todas</option></select>
+    </label>
+  </div>
+  <p class="conteo" id="conteo" role="status"></p>
+
+  <div class="tabla-wrap">
+    <table>
+      <thead><tr id="encabezados"></tr></thead>
+      <tbody id="filas"></tbody>
+    </table>
+  </div>
+</main>
+
+<footer class="pie">
+  <div class="contenedor">Este sitio no reemplaza la consulta médica. © 2026 Bagó.</div>
+</footer>
+
+<script src="especialistas-datos.js"></script>
+<script>
+const columnas = [
+  { k: "estado",         t: "Estado de visita" },
+  { k: "region",         t: "Región" },
+  { k: "zona",           t: "Zona" },
+  { k: "rut",            t: "RUT" },
+  { k: "medico",         t: "Médico" },
+  { k: "esp",            t: "Especialidad" },
+  { k: "sesp",           t: "Subespecialidad" },
+  { k: "categoria",      t: "Categoría" },
+  { k: "fono",           t: "Teléfono" },
+  { k: "telConsultorio", t: "Teléfono consultorio" },
+  { k: "celular",        t: "Celular" },
+  { k: "direccion",      t: "Dirección" },
+  { k: "email",          t: "Email" },
+];
+const telefonos = ["fono", "telConsultorio", "celular"];
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const normal = s => String(s).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
+function celda(d, c) {
+  const v = d[c.k] || "";
+  if (!v) return "";
+  if (telefonos.includes(c.k)) return `<a href="tel:${esc(v.replace(/[^\d+]/g, ""))}">${esc(v)}</a>`;
+  if (c.k === "email" && v.includes("@")) return `<a href="mailto:${esc(v)}">${esc(v)}</a>`;
+  return esc(v);
+}
+
+document.getElementById("encabezados").innerHTML = columnas.map(c => `<th scope="col">${c.t}</th>`).join("");
+
+const selRegion = document.getElementById("region"), selZona = document.getElementById("zona");
+const buscar = document.getElementById("buscar"), filas = document.getElementById("filas"), conteo = document.getElementById("conteo");
+const unicos = k => [...new Set(especialistas.map(d => d[k]).filter(Boolean))].sort((a, b) => a.localeCompare(b, "es"));
+const opciones = lista => '<option value="">Todas</option>' + lista.map(v => `<option>${esc(v)}</option>`).join("");
+selRegion.innerHTML = opciones(unicos("region"));
+
+function actualizarZonas() {
+  const actual = selZona.value;
+  const zonas = [...new Set(especialistas.filter(d => !selRegion.value || d.region === selRegion.value).map(d => d.zona).filter(Boolean))].sort((a, b) => a.localeCompare(b, "es"));
+  selZona.innerHTML = opciones(zonas);
+  if (zonas.includes(actual)) selZona.value = actual;
+}
+
+const indice = especialistas.map(d => normal(columnas.map(c => d[c.k]).join(" ")));
+
+function pintar() {
+  const q = normal(buscar.value.trim());
+  const res = especialistas.filter((d, i) =>
+    (!selRegion.value || d.region === selRegion.value) &&
+    (!selZona.value || d.zona === selZona.value) &&
+    (!q || q.split(/\s+/).every(p => indice[i].includes(p))));
+  filas.innerHTML = res.length
+    ? res.map(d => `<tr>${columnas.map(c => `<td class="${c.k}" data-label="${c.t}">${celda(d, c)}</td>`).join("")}</tr>`).join("")
+    : `<tr><td class="vacio" colspan="${columnas.length}">No encontramos especialistas con esos filtros.</td></tr>`;
+  conteo.textContent = `${res.length} de ${especialistas.length} especialistas`;
+}
+
+buscar.addEventListener("input", pintar);
+selRegion.addEventListener("change", () => { actualizarZonas(); pintar(); });
+selZona.addEventListener("change", pintar);
+actualizarZonas();
+pintar();
+</script>
+</body>
+</html>
