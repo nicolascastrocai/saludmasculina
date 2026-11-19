@@ -98,12 +98,12 @@
   .carrusel { position: relative; }
   .pista { display: flex; gap: 22px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; padding: 6px 4px 18px; scrollbar-width: none; }
   .pista::-webkit-scrollbar { display: none; }
-  .tarjeta { flex: 0 0 calc((100% - 3 * 22px) / 4); scroll-snap-align: start; background: var(--tarjeta); border-radius: 18px; overflow: hidden; box-shadow: 0 10px 26px #6d00552e; display: flex; flex-direction: column; }
-  .clip { position: relative; aspect-ratio: 9 / 16; overflow: hidden; border: 0; padding: 0; cursor: pointer; display: block; width: 100%; background: #cfe9f8; }
+  .tarjeta { flex: 0 0 calc((100% - 2 * 22px) / 3); scroll-snap-align: start; background: var(--tarjeta); border-radius: 18px; overflow: hidden; box-shadow: 0 10px 26px #6d00552e; display: flex; flex-direction: column; }
+  .clip { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border: 0; padding: 0; cursor: pointer; display: block; width: 100%; background: #cfe9f8; }
   .clip video { width: 100%; height: 100%; object-fit: cover; display: block; background: #000; }
   .clip .reproducir-clip { position: absolute; inset: 0; border: 0; padding: 0; background: linear-gradient(180deg, #0000 60%, #0006); cursor: pointer; }
   .clip.activo .reproducir-clip, .clip.activo .marca, .clip.activo .dur { display: none; }
-  .clip .play { position: absolute; left: 50%; top: 74%; transform: translate(-50%, -50%); width: 64px; }
+  .clip .play { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 64px; }
   .clip:hover .play { transform: translate(-50%, -50%) scale(1.08); }
   .clip .tema { position: absolute; left: 0; right: 0; bottom: 0; padding: 40px 14px 14px; text-align: left; color: #fff; font-weight: 700; font-size: 15px; line-height: 1.3; background: linear-gradient(180deg, #0000, #000b); }
   .clip .dur { position: absolute; right: 10px; top: 10px; background: #000a; color: #fff; font-size: 12px; padding: 3px 8px; border-radius: 6px; }
@@ -162,7 +162,7 @@
 
   /* ---------- Responsivo ---------- */
   @media (max-width: 1024px) {
-    .tarjeta { flex-basis: calc((100% - 2 * 22px) / 3); }
+    .tarjeta { flex-basis: calc((100% - 22px) / 2); }
     .agenda .contenedor { grid-template-columns: 1fr auto; }
     .separador { display: none; }
     .celular { grid-column: 1 / -1; justify-content: center; }
@@ -183,7 +183,7 @@
     .acciones { justify-content: center; }
     .hero .huevos { width: min(86%, 380px); order: 2; margin-top: 18px; }
     .ola { height: 80px; }
-    .tarjeta { flex-basis: 78%; }
+    .tarjeta { flex-basis: 88%; }
     .agenda { padding: 80px 0 56px; text-align: center; }
     .agenda .contenedor { grid-template-columns: 1fr; gap: 26px; justify-items: center; }
     .qr-bloque { display: none; }          /* en el celular no tiene sentido escanear: se usa el botón */
@@ -305,7 +305,7 @@ const doctores = [
 const pista = document.getElementById("pista");
 pista.innerHTML = doctores.map(d => `<article class="tarjeta">
     <div class="clip">
-      <video src="img/videos/${encodeURI(d.video)}#t=0.1" preload="metadata" playsinline></video>
+      <video src="img/videos-web/${encodeURI(d.video)}#t=0.1" preload="metadata" playsinline></video>
       <img class="marca" src="img/logo-bago-blanco.svg" alt="">
       <span class="dur"></span>
       <button class="reproducir-clip" aria-label="Reproducir el video de ${d.nombre}">
