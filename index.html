@@ -74,8 +74,11 @@
   .ola { position: absolute; left: 0; bottom: -1px; width: 100%; height: 140px; z-index: 1; }
 
   /* ---------- Video campaña ---------- */
-  .video-campana { position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: 92vh; background: #000; overflow: hidden; }
+  .video-campana { position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: 92vh; background: var(--azul); overflow: hidden; }
   .video-campana img { width: 100%; height: 100%; object-fit: cover; }
+  .video-campana video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: var(--azul); display: none; }
+  .video-campana.activo video { display: block; }
+  .video-campana.activo .reproducir, .video-campana.activo img { display: none; }
 
   .reproducir { position: absolute; inset: 0; display: grid; place-items: center; background: linear-gradient(180deg, #0000 50%, #0007 100%); border: 0; cursor: pointer; color: #fff; }
   .play { width: clamp(64px, 9vw, 110px); aspect-ratio: 1; border-radius: 50%; background: #ffffffe6; display: grid; place-items: center; box-shadow: 0 10px 40px #0005; transition: transform .2s; }
@@ -238,10 +241,11 @@
   <!-- VIDEO DE LA CAMPAÑA (tope a tope) -->
   <section class="video-campana" id="campana" aria-label="Video de la campaña">
     <img src="img/video-campana.webp" alt="" width="1672" height="941">
-    <button class="reproducir" data-video="campana" aria-label="Reproducir el video de la campaña">
+    <video id="video-campana" src="img/videos-web/video-campana.mp4" preload="metadata" playsinline></video>
+    <button class="reproducir" aria-label="Reproducir el video de la campaña">
       <span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l15 8-15 8z"/></svg></span>
       <span class="video-info"><small>Noviembre Azul · Bagó + Sofía</small><strong>PONELE huevos a tu salud</strong></span>
-      <span class="duracion">1:30</span>
+      <span class="duracion" id="duracion-campana"></span>
     </button>
   </section>
 
@@ -343,7 +347,7 @@ pista.querySelectorAll(".clip").forEach(clip => {
     dur.textContent = Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
   });
   clip.querySelector(".reproducir-clip").onclick = () => {
-    pista.querySelectorAll("video").forEach(o => { if (o !== v) o.pause(); });
+    document.querySelectorAll("video").forEach(o => { if (o !== v) o.pause(); });
     clip.classList.add("activo");
     v.controls = true;
     v.play();
@@ -396,8 +400,17 @@ marcar(); reiniciar();
 /* ===== Videos de muestra y enlaces pendientes ===== */
 const aviso = document.getElementById("aviso");
 function avisar(t) { aviso.textContent = t; aviso.classList.add("ver"); clearTimeout(aviso._t); aviso._t = setTimeout(() => aviso.classList.remove("ver"), 2600); }
-document.querySelectorAll("[data-video]").forEach(b => b.addEventListener("click", () =>
-  avisar("Aquí se reproducirá el video de la campaña.")));
+const seccionCampana = document.getElementById("campana"), videoCampana = document.getElementById("video-campana");
+videoCampana.addEventListener("loadedmetadata", () => {
+  const s = Math.round(videoCampana.duration);
+  document.getElementById("duracion-campana").textContent = Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+});
+seccionCampana.querySelector(".reproducir").onclick = () => {
+  pista.querySelectorAll("video").forEach(o => o.pause());
+  seccionCampana.classList.add("activo");
+  videoCampana.controls = true;
+  videoCampana.play();
+};
 
 /* ===== Menú en el celular ===== */
 const hamb = document.querySelector(".hamburguesa"), menu = document.getElementById("menu");
